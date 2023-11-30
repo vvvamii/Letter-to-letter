@@ -1,0 +1,10 @@
+Lorem   1000
+ipsum   4000
+dolor   9000
+sit    2000
+amet    7000
+consectetur 3000
+adipiscing  10000
+elit    5000
+sed 8000
+do  6000
