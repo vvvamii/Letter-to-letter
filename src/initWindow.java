@@ -9,7 +9,8 @@ public class initWindow extends JFrame{
     void initialize(){
         setContentPane(myFrame.backgroundJPanel);
         setTitle("XDDDD");
-        setSize(600,400);
+        setSize(1000,600);
+        setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
@@ -19,9 +20,12 @@ public class initWindow extends JFrame{
         Highscore highscore = new Highscore();
         ArrayList list = highscore.loadhighscore();
         JPanel panel = highscore.panel();
-        panel.setLayout(myFrame.backgroundJPanel.getLayout());
+      //  panel.setLayout(myFrame.backgroundJPanel.getLayout());
         myFrame.backgroundJPanel.add(panel);
         panel.setVisible(true);
-        System.out.println("TRYB 1 !!!!!");
+    }
+
+    static void gameMode(){
+
     }
 }

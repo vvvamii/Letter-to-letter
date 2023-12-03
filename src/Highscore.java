@@ -1,7 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Highscore {
@@ -18,22 +22,47 @@ public class Highscore {
     }
 
     JPanel panel(){
-        JPanel panel = new JPanel(new CardLayout());
-        List<String> myList = new ArrayList<>(10);
-        for (int index = 0; index < 20; index++) {
-            myList.add("List Item " + index);
+        JPanel panel = new JPanel(null);
+        loadData load = new loadData();
+        ArrayList<String> myList = null;
+        try {
+            myList = load.load("scoreboard.txt");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
+        Collections.sort(myList);
         final JList<String> list = new JList<String>(myList.toArray(new String[myList.size()]));
+        list.setFont(new Font("Monospaced", Font.ITALIC, 50));
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(list);
         list.setLayoutOrientation(JList.VERTICAL);
+        scrollPane.setBounds(20,20,950,300);
         panel.add(scrollPane);
         JButton backButton = new JButton("BACK");
-        backButton.setBounds(200,200,200,200);
+        backButton.setBounds(850,500,100,50);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.setVisible(false);
+            }
+        });
+
         panel.add(backButton);
 
         return panel;
     }
 
+
+}
+
+class ScoreInfo {
+    int points;
+    private String name;
+
+    ArrayList<ScoreInfo> scoreboard(){
+        ArrayList<ScoreInfo> scores = new ArrayList<ScoreInfo>();
+      //  Collections.sort(scores, Comparator.);
+        return scores;
+    }
 
 }
