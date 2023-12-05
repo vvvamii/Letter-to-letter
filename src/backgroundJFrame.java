@@ -40,20 +40,6 @@ public class backgroundJFrame extends JFrame{
             }
         });
 
-
-        HRATButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                menuJPanel.setVisible(false);
-                GamePanel gp = new GamePanel();
-                JPanel asd = gp.addingPanel();
-                add(asd);
-                pack();
-                setLocationRelativeTo(null);
-                setVisible(true);
-                // landingJPanel.setVisible(true);
-            }
-        });
     }
 
 
