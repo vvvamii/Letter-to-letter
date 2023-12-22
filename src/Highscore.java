@@ -46,9 +46,7 @@ public class Highscore {
                 panel.setVisible(false);
             }
         });
-
         panel.add(backButton);
-
         return panel;
     }
 
