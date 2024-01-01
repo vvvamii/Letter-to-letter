@@ -28,8 +28,8 @@ public class backgroundJFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 menuJPanel.setVisible(false);
-                backgroundJPanel.setVisible(false);
-                movableJPanels test = new movableJPanels();
+                initWindow tempInit = new initWindow();
+                tempInit.gameMode();
             }
         });
 

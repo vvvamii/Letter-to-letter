@@ -16,7 +16,7 @@ public class initWindow extends JFrame{
 
 
     }
-   static void scoreboardMode(){
+    static void scoreboardMode(){
         Highscore highscore = new Highscore();
         ArrayList list = highscore.loadhighscore();
         JPanel panel = highscore.panel();
@@ -24,8 +24,10 @@ public class initWindow extends JFrame{
         myFrame.backgroundJPanel.add(panel);
         panel.setVisible(true);
     }
-
     static void gameMode(){
-
+        movableJPanels movablejpanels = new movableJPanels();
+        JPanel panel = movablejpanels.panel();
+        myFrame.backgroundJPanel.add(panel);
+        panel.setVisible(true);
     }
 }
