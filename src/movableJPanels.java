@@ -1,14 +1,26 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class movableJPanels {
     JPanel panel(){
-        JPanel back = new JPanel(null);
-        back.setBackground(Color.cyan);
-        back.setLayout(null);
-        back.setLocation(0,0);
+        JPanel backgroundjpanel = new JPanel(null);
+        backgroundjpanel.setBackground(Color.cyan);
+        backgroundjpanel.setLayout(null);
+        backgroundjpanel.setLocation(0,0);
+
+        JButton backButton = new JButton("BACK");
+        backButton.setBounds(850,500,100,50);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                backgroundjpanel.setVisible(false);
+            }
+        });
+        backgroundjpanel.add(backButton);
 
         ArrayList<String> data = new ArrayList<String>();
         loadData loadData = new loadData();
@@ -20,21 +32,21 @@ public class movableJPanels {
         String loadedString = (String)data.get(0);
 
         for(int i = 0; i < loadedString.length(); i++){
-            JPanel letterpanel = new JPanel();
+            JPanel letterjpanel = new JPanel();
             JLabel label = new JLabel();
-            letterpanel.setBackground(new Color(238+i*2, 206+i*2, 132+i*2));
-            letterpanel.setSize(75,75);
+            letterjpanel.setBackground(new Color(238+i*2, 206+i*2, 132+i*2));
+            letterjpanel.setSize(75,75);
             label.setText("["+loadedString.charAt(i)+"]");
             label.setFont(new Font("Arial", 1, 45));
-            //TODO wysrodkowanie label w panel
-            letterpanel.add(label);
-            back.add(letterpanel);
+            //TODO wysrodkowanie label w panel / zmiana z JPanel na rectanngle
+            letterjpanel.add(label);
+            backgroundjpanel.add(letterjpanel);
 
 
         }
 
-        myMovement movement = new myMovement(back.getComponents());
-        return back;
+        myMovement movement = new myMovement(backgroundjpanel.getComponents());
+        return backgroundjpanel;
     }
 
 }
