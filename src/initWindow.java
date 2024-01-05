@@ -9,8 +9,9 @@ public class initWindow extends JFrame{
     void initialize(){
         setContentPane(myFrame.backgroundJPanel);
         setTitle("Litera do litery - projekt");
-        setSize(1000,600);
+        setSize(1000,700);
         setResizable(false);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 

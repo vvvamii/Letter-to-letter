@@ -33,13 +33,20 @@ public class Highscore {
         Collections.sort(myList);
         final JList<String> list = new JList<String>(myList.toArray(new String[myList.size()]));
         list.setFont(new Font("Monospaced", Font.ITALIC, 50));
+
+        JLabel titlelabel = new JLabel("TABELA WYNIKÓW");
+        titlelabel.setFont(new Font("Ebrima", Font.ITALIC, 50));
+        titlelabel.setBounds(300,10,500,50);
+        panel.add(titlelabel);
+
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(list);
         list.setLayoutOrientation(JList.VERTICAL);
-        scrollPane.setBounds(20,20,950,300);
+        scrollPane.setBounds(10,75,960,500);
         panel.add(scrollPane);
+
         JButton backButton = new JButton("BACK");
-        backButton.setBounds(850,500,100,50);
+        backButton.setBounds(850,600,100,50);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -47,6 +54,7 @@ public class Highscore {
             }
         });
         panel.add(backButton);
+
         return panel;
     }
 
