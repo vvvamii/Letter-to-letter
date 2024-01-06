@@ -9,6 +9,7 @@ import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Font;
+import java.util.Objects;
 
 public class myMovement extends JPanel {
     private static final Color Background = Color.WHITE;
@@ -94,7 +95,7 @@ public class myMovement extends JPanel {
             colorShape.translate(p, e.getPoint());
 
             for (int i=0;i<answerRectangles.size(); ++i) {
-                colorShape.intersecting(answerRectangles.get(i).rect);
+                colorShape.intersecting(answerRectangles.get(i));
                 System.out.println(i + " rect = " + colorShape.placedCorrectly);
                 //  System.out.println(answerRectangles.get(i).rect.x + " " + answerRectangles.get(i).rect.y + " " + answerRectangles.get(i).rect.width + " " + answerRectangles.get(i).rect.height + " ");
                 System.out.println(colorShape.getX() + " " + colorShape.getY() + " ");
@@ -145,10 +146,11 @@ class ColorShape {
         return path.contains(p);
     }
 
-    // sprawdzenie czy kształty się przecinają
-    public void intersecting(Rectangle rectangle){
-        if(this.intersectionZone.intersects(rectangle.x, rectangle.y, rectangle.width, rectangle.height)) {
-            this.placedCorrectly = true;
+    // sprawdzenie czy odpowiednia litera przecina się z odpowiednim kwadratem
+    public void intersecting(AnswerRectangle answerRectangle){
+        if(this.intersectionZone.intersects(answerRectangle.rect.x, answerRectangle.rect.y, answerRectangle.rect.width, answerRectangle.rect.height)) {
+            if(Objects.equals(this.character, answerRectangle.character)) this.placedCorrectly = true;
+            else this.placedCorrectly = false;
         }
         else this.placedCorrectly = false;
     }
@@ -192,11 +194,13 @@ class AnswerRectangle{
     private int x;
     private int y;
     private int SIZE = 90;
+    public String character;
     private Path2D path;
     public Rectangle rect;
-    public AnswerRectangle(int x, int y){
+    public AnswerRectangle(int x, int y, String character){
         this.x = x;
         this.y = y;
+        this.character = character;
 
         rect = new Rectangle(x, y ,SIZE, SIZE);
         path = new Path2D.Double(rect);
@@ -208,6 +212,7 @@ class AnswerRectangle{
         g2.fill(path);
         g2.setColor(Color.black);
         g2.draw(path);
+        g2.drawString(String.valueOf(this.character), this.x, this.y);
     }
 
 }

@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class movableJPanels {
+public class GameJPanel {
     JPanel panel(){
         JPanel backgroundjpanel = new JPanel(null);
         backgroundjpanel.setBackground(Color.cyan);
@@ -88,8 +88,8 @@ public class movableJPanels {
             String loadedString = (String)data.get(i);
             if(stageFinished == true){
                 for(int j = 0; j < loadedString.length(); j++){
-                    dragShapes.movableLetters.add(new ColorShape(Color.blue, " " + loadedString.charAt(j) +" "));
-                    dragShapes.answerRectangles.add(new AnswerRectangle(25 + j*110,400));
+                    dragShapes.movableLetters.add(new ColorShape(Color.blue, Character.toString(loadedString.charAt(j))));
+                    dragShapes.answerRectangles.add(new AnswerRectangle(25 + j*110,400, Character.toString(loadedString.charAt(j))));
                 }
                 stageFinished = false;
             }

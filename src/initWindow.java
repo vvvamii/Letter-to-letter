@@ -24,7 +24,7 @@ public class initWindow extends JFrame{
         panel.setVisible(true);
     }
     static void gameMode(){
-        movableJPanels movablejpanels = new movableJPanels();
+        GameJPanel movablejpanels = new GameJPanel();
         JPanel panel = movablejpanels.panel();
         myFrame.backgroundJPanel.add(panel);
         panel.setVisible(true);
