@@ -9,6 +9,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameJPanel {
+
+    int level = 0;
+    boolean stageFinished = true;
+    int lines = 0;
+    Timer timer;
+    ArrayList<String> data = new ArrayList<String>();
+    DragShapes dragShapes = new DragShapes();
+    JLabel timelabel = new JLabel("TT");
+    JLabel levellabel = new JLabel("X");
+    JLabel scorelabel = new JLabel("Y");
+
     JPanel panel(){
         JPanel backgroundjpanel = new JPanel(null);
         backgroundjpanel.setBackground(Color.cyan);
@@ -16,19 +27,16 @@ public class GameJPanel {
         JButton backButton = new JButton("WYJŚCIE");
         backButton.setBounds(875,25,100,50);
 
-        Timer timer;
+        JButton checkButton = new JButton("SPRAWDŹ");
 
-        JLabel timelabel = new JLabel("TT");
         timelabel.setFont(new Font("Monospaced", Font.BOLD, 40));
         timelabel.setBounds(680,35,200,50);
         backgroundjpanel.add(timelabel);
 
-        JLabel scorelabel = new JLabel("Y");
         scorelabel.setFont(new Font("Monospaced", Font.BOLD, 40));
         scorelabel.setBounds(400,35,200,50);
         backgroundjpanel.add(scorelabel);
 
-        JLabel levellabel = new JLabel("X");
         levellabel.setFont(new Font("Monospaced", Font.BOLD, 40));
         levellabel.setBounds(90,35,200,50);
         backgroundjpanel.add(levellabel);
@@ -41,7 +49,6 @@ public class GameJPanel {
         menulabel.setBounds(30,0,900,50);
         backgroundjpanel.add(menulabel);
 
-        myMovement dragShapes = new myMovement();
         backgroundjpanel.add(dragShapes);
 
         backButton.addActionListener(new ActionListener() {
@@ -52,9 +59,30 @@ public class GameJPanel {
         });
         backgroundjpanel.add(backButton);
 
-        ArrayList<String> data = new ArrayList<String>();
+        checkButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int check = 0;
+                for (MovableLetter movableLetter : dragShapes.movableLetters){
+                   movableLetter.placedCorrectly = false;
+                   for (AnswerRectangle answerRectangle : dragShapes.answerRectangles){
+                       movableLetter.forceIntersecting(answerRectangle);
+                   }
+                   if(movableLetter.placedCorrectly) ++check;
+                   System.out.println(movableLetter.placedCorrectly);
+               }
+                if(check == dragShapes.answerRectangles.size()) {
+                    ++level;
+                    stageFinished = true;
+                    play();
+                    // System.out.println("YIPP");
+                }
+            }
+        });
+        dragShapes.add(checkButton, BorderLayout.SOUTH);
+
         loadData loadData = new loadData();
-        int lines = 0;
+
 
         try {
             data = loadData.load("dane.txt");
@@ -72,9 +100,24 @@ public class GameJPanel {
             throw new RuntimeException(e);
         }
 
+        play();
 
-        boolean stageFinished = true;
-        for(int i = 0; i < lines; ++i){
+        return backgroundjpanel;
+    }
+
+
+
+    void play(){
+
+        int score = 0;
+
+        if(level > 0) {
+            timer.stop();
+            ++score;
+        }
+
+        if(level < lines || stageFinished == true){
+
             timer = new Timer(1000, new ActionListener() {
                 int counter = 0;
                 @Override
@@ -85,17 +128,21 @@ public class GameJPanel {
             });
             timer.start();
 
-            String loadedString = (String)data.get(i);
+            String loadedString = (String)data.get(level);
             if(stageFinished == true){
+                dragShapes.movableLetters.clear();
+                dragShapes.answerRectangles.clear();
                 for(int j = 0; j < loadedString.length(); j++){
-                    dragShapes.movableLetters.add(new ColorShape(Color.blue, Character.toString(loadedString.charAt(j))));
+                    dragShapes.movableLetters.add(new MovableLetter(Color.blue, Character.toString(loadedString.charAt(j))));
                     dragShapes.answerRectangles.add(new AnswerRectangle(25 + j*110,400, Character.toString(loadedString.charAt(j))));
                 }
                 stageFinished = false;
             }
+            System.out.println("STAGE: " + level);
+            levellabel.setText(String.valueOf(level + 1));
+            scorelabel.setText(String.valueOf(score));
+            dragShapes.repaint();
         }
-
-        return backgroundjpanel;
     }
 
 }

@@ -11,15 +11,17 @@ import java.util.List;
 import java.awt.Font;
 import java.util.Objects;
 
-public class myMovement extends JPanel {
+public class DragShapes extends JPanel {
     private static final Color Background = Color.WHITE;
     private int panelWidth;
     private int panelHeight;
-    public List<ColorShape> movableLetters = new ArrayList<>();
+    public List<MovableLetter> movableLetters = new ArrayList<>();
     public List<AnswerRectangle> answerRectangles = new ArrayList<>();
+    public boolean allClear;
 
-    public myMovement() {
+    public DragShapes() {
 
+        setLayout(new BorderLayout());
         setBounds(10,100,960,550);
         setBackground(Color.green);
         setBackground(Background);
@@ -42,29 +44,29 @@ public class myMovement extends JPanel {
             rect.draw(g2);
         }
 
-        for (ColorShape colorShape : movableLetters) {
-            colorShape.draw(g2);
+        for (MovableLetter movableLetter : movableLetters) {
+            movableLetter.draw(g2);
         }
 
     }
 
 
     private class MyMouse extends MouseAdapter {
-        private ColorShape colorShape; // aktualna litera, którą ruszamy
+        private MovableLetter movableLetter; // aktualna litera, którą ruszamy
         private Point p; // poprzednie położenie litery
 
         @Override
         public void mousePressed(MouseEvent e) {
             for (int i = movableLetters.size() - 1; i >= 0; i--) {
                 // wzięcie używanej litery
-                ColorShape colorShape = movableLetters.get(i);
-                if (colorShape.contains(e.getPoint())) {
-                    this.colorShape = colorShape;
+                MovableLetter movableLetter = movableLetters.get(i);
+                if (movableLetter.contains(e.getPoint())) {
+                    this.movableLetter = movableLetter;
                     this.p = e.getPoint();
 
                     // aktualna litera na wierzchu
-                    movableLetters.remove(colorShape);
-                    movableLetters.add(colorShape);
+                    movableLetters.remove(movableLetter);
+                    movableLetters.add(movableLetter);
 
                     repaint();
                     return;
@@ -75,7 +77,7 @@ public class myMovement extends JPanel {
         @Override
         public void mouseReleased(MouseEvent e) {
             moveShape(e); // ruch literą
-            colorShape = null;  // usunięcie referencji
+            movableLetter = null;  // usunięcie referencji
         }
 
         @Override
@@ -85,20 +87,20 @@ public class myMovement extends JPanel {
 
         private void moveShape(MouseEvent e) {
             // jeśli nie ruszamy literą - wyjście
-            if (colorShape == null) {
+            if (movableLetter == null) {
                 return;
             }
 
             // jeśli ruszamy - translate i aktualizacja X oraz Y
-            colorShape.setX(e.getX());
-            colorShape.setY(e.getY());
-            colorShape.translate(p, e.getPoint());
+            movableLetter.setX(e.getX());
+            movableLetter.setY(e.getY());
+            movableLetter.translate(p, e.getPoint());
 
             for (int i=0;i<answerRectangles.size(); ++i) {
-                colorShape.intersecting(answerRectangles.get(i));
-                System.out.println(i + " rect = " + colorShape.placedCorrectly);
+                movableLetter.intersecting(answerRectangles.get(i));
+                System.out.println(i + " rect = " + movableLetter.placedCorrectly);
                 //  System.out.println(answerRectangles.get(i).rect.x + " " + answerRectangles.get(i).rect.y + " " + answerRectangles.get(i).rect.width + " " + answerRectangles.get(i).rect.height + " ");
-                System.out.println(colorShape.getX() + " " + colorShape.getY() + " ");
+                System.out.println(movableLetter.getX() + " " + movableLetter.getY() + " ");
             }
 
 
@@ -116,7 +118,7 @@ public class myMovement extends JPanel {
 
 
 
-class ColorShape {
+class MovableLetter {
     private Color color;
     private int x;
     private int y;
@@ -126,14 +128,14 @@ class ColorShape {
     private Shape shape;
     private Rectangle intersectionZone;
 
-    public ColorShape(Color color, String character) {
+    public MovableLetter(Color color, String character) {
         super();
         this.color = color;
         this.character = character;
         this.placedCorrectly = false;
 
         // tworzenie litery
-        TextLayout textTl = new TextLayout(character, new Font("Helvetica", Font.BOLD, 92),new FontRenderContext(null, false, false));
+        TextLayout textTl = new TextLayout(character, new Font("Helvetica", Font.BOLD, 80),new FontRenderContext(null, false, false));
         AffineTransform textAt = new AffineTransform();
         textAt.translate(0, (float)textTl.getBounds().getHeight());
         shape = textTl.getOutline(textAt);
@@ -153,6 +155,12 @@ class ColorShape {
             else this.placedCorrectly = false;
         }
         else this.placedCorrectly = false;
+    }
+
+    public void forceIntersecting(AnswerRectangle answerRectangle){
+        if(this.intersectionZone.intersects(answerRectangle.rect.x, answerRectangle.rect.y, answerRectangle.rect.width, answerRectangle.rect.height)) {
+            if(Objects.equals(this.character, answerRectangle.character)) this.placedCorrectly = true;
+        }
     }
 
     // rysuj
@@ -193,7 +201,7 @@ class ColorShape {
 class AnswerRectangle{
     private int x;
     private int y;
-    private int SIZE = 90;
+    private int SIZE = 80;
     public String character;
     private Path2D path;
     public Rectangle rect;
