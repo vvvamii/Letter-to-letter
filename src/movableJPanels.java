@@ -2,7 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class movableJPanels {
@@ -10,13 +13,10 @@ public class movableJPanels {
         JPanel backgroundjpanel = new JPanel(null);
         backgroundjpanel.setBackground(Color.cyan);
 
-//        JPanel gamezone = new JPanel(null);
-//        gamezone.setBackground(Color.yellow);
-//        gamezone.setBounds(10,100,960,550);
-//        backgroundjpanel.add(gamezone);
-
         JButton backButton = new JButton("WYJŚCIE");
         backButton.setBounds(875,25,100,50);
+
+        Timer timer;
 
         JLabel timelabel = new JLabel("TT");
         timelabel.setFont(new Font("Monospaced", Font.BOLD, 40));
@@ -54,28 +54,47 @@ public class movableJPanels {
 
         ArrayList<String> data = new ArrayList<String>();
         loadData loadData = new loadData();
+        int lines = 0;
+
         try {
             data = loadData.load("dane.txt");
-        } catch (FileNotFoundException e) {
+            BufferedReader reader = new BufferedReader(new FileReader("dane.txt"));
+
+            try {
+                while (reader.readLine() != null) lines++;
+                reader.close();
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        String loadedString = (String)data.get(0);
-
-        int coord = 0;
 
 
-        for(int i = 0; i < loadedString.length(); i++){
+        boolean stageFinished = true;
+        for(int i = 0; i < lines; ++i){
+            timer = new Timer(1000, new ActionListener() {
+                int counter = 0;
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    timelabel.setText(String.valueOf(counter));
+                    ++counter;
+                }
+            });
+            timer.start();
 
-            dragShapes.shapes.add(new ColorShape(Color.blue, coord, coord));
-            coord = 50*i;
-
-            Rectangle rect = new Rectangle(coord, coord, 100, 100);
-
-
-
+            String loadedString = (String)data.get(i);
+            if(stageFinished == true){
+                for(int j = 0; j < loadedString.length(); j++){
+                    dragShapes.movableLetters.add(new ColorShape(Color.blue, " " + loadedString.charAt(j) +" "));
+                    dragShapes.answerRectangles.add(new AnswerRectangle(25 + j*110,400));
+                }
+                stageFinished = false;
+            }
         }
-//TODO uzupelnienie z stackoverflow
-        //myMovement movement = new myMovement(movementCanvas.rectangles);
+
         return backgroundjpanel;
     }
 

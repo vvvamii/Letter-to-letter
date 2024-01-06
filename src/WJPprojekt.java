@@ -6,10 +6,5 @@ public class WJPprojekt {
 
         initWindow init = new initWindow();
         init.initialize();
-//        ArrayList<String> data = new ArrayList<String>();
-//        loadData loadData = new loadData();
-//        data = loadData.load("dane.txt");
-
-
     }
 }

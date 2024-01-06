@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class backgroundJFrame extends JFrame{
     public JPanel backgroundJPanel;
@@ -9,9 +8,7 @@ public class backgroundJFrame extends JFrame{
     private JPanel menuJPanel;
     private JLabel mainMenuLabel;
     private JButton gameButton;
-    private JPanel gameJPanel;
     private JButton quitButton;
-    private JButton HRATButton;
 
     public backgroundJFrame() {
 

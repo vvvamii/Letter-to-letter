@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class Highscore {
     ArrayList<String> loadhighscore(){

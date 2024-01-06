@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class initWindow extends JFrame{
@@ -21,7 +20,6 @@ public class initWindow extends JFrame{
         Highscore highscore = new Highscore();
         ArrayList list = highscore.loadhighscore();
         JPanel panel = highscore.panel();
-      //  panel.setLayout(myFrame.backgroundJPanel.getLayout());
         myFrame.backgroundJPanel.add(panel);
         panel.setVisible(true);
     }
