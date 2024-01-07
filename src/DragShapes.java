@@ -1,3 +1,4 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -6,6 +7,8 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Font;
@@ -13,11 +16,9 @@ import java.util.Objects;
 
 public class DragShapes extends JPanel {
     private static final Color Background = Color.WHITE;
-    private int panelWidth;
-    private int panelHeight;
     public List<MovableLetter> movableLetters = new ArrayList<>();
     public List<AnswerRectangle> answerRectangles = new ArrayList<>();
-    public boolean allClear;
+    public ImageQuestion image;
 
     public DragShapes() {
 
@@ -48,6 +49,7 @@ public class DragShapes extends JPanel {
             movableLetter.draw(g2);
         }
 
+        image.draw(g2);
     }
 
 
@@ -128,8 +130,10 @@ class MovableLetter {
     private Shape shape;
     private Rectangle intersectionZone;
 
-    public MovableLetter(Color color, String character) {
+    public MovableLetter(int x, int y, Color color, String character) {
         super();
+        this.x = x;
+        this.y = y;
         this.color = color;
         this.character = character;
         this.placedCorrectly = false;
@@ -222,5 +226,23 @@ class AnswerRectangle{
         g2.draw(path);
         g2.drawString(String.valueOf(this.character), this.x, this.y);
     }
+}
 
+class ImageQuestion{
+    private Image image;
+
+    public ImageQuestion(){
+    }
+
+    void setImage(InputStream is){
+        try {
+            this.image = ImageIO.read(is);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void draw(Graphics2D g2){
+        g2.drawImage(image, 350, 10, 150, 150, null);
+    }
 }

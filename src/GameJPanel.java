@@ -1,3 +1,4 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -133,11 +134,15 @@ public class GameJPanel {
             timer.start();
 
             String loadedString = (String)data.get(level);
+            InputStream is = GameJPanel.class.getResourceAsStream(loadedString + ".png");
+            ImageQuestion image = new ImageQuestion();
+            image.setImage(is);
+
             if(stageFinished == true){
                 dragShapes.movableLetters.clear();
                 dragShapes.answerRectangles.clear();
                 for(int j = 0; j < loadedString.length(); j++){
-                    dragShapes.movableLetters.add(new MovableLetter(Color.blue, Character.toString(loadedString.charAt(j))));
+                    dragShapes.movableLetters.add(new MovableLetter(10 + j*90, 200, Color.blue, Character.toString(loadedString.charAt(j))));
                     dragShapes.answerRectangles.add(new AnswerRectangle(10 + j*90,400, Character.toString(loadedString.charAt(j))));
                 }
                 stageFinished = false;
@@ -145,6 +150,7 @@ public class GameJPanel {
             System.out.println("STAGE: " + level);
             levellabel.setText(String.valueOf(level + 1));
             scorelabel.setText(String.valueOf(score));
+            dragShapes.image = image;
             dragShapes.repaint();
         }
     }
