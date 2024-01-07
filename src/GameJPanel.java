@@ -38,32 +38,32 @@ public class GameJPanel {
 
         JButton checkButton = new JButton("SPRAWDŹ");
 
-        timelabel.setFont(new Font("Monospaced", Font.BOLD, 40));
+        timelabel.setFont(new Font("Segoe UI", Font.BOLD, 40));
         timelabel.setBounds(680,20,200,50);
         timelabel.setForeground(Color.black);
         backgroundjpanel.add(timelabel);
 
-        scorelabel.setFont(new Font("Monospaced", Font.BOLD, 40));
+        scorelabel.setFont(new Font("Segoe UI", Font.BOLD, 40));
         scorelabel.setBounds(400,20,200,50);
         scorelabel.setForeground(Color.black);
         backgroundjpanel.add(scorelabel);
 
-        levellabel.setFont(new Font("Monospaced", Font.BOLD, 40));
-        levellabel.setBounds(70,20,200,50);
+        levellabel.setFont(new Font("Segoe UI", Font.BOLD, 40));
+        levellabel.setBounds(55,20,200,50);
         levellabel.setForeground(Color.black);
         backgroundjpanel.add(levellabel);
 
         selectedgamemodelabel.setText(selectedGameMode);
-        selectedgamemodelabel.setFont(new Font("Monospaced", Font.BOLD, 40));
-        selectedgamemodelabel.setBounds(300,55,500,50);
+        selectedgamemodelabel.setFont(new Font("BIZ UDGothic", Font.BOLD, 35));
+        selectedgamemodelabel.setBounds(350,60,500,50);
         selectedgamemodelabel.setForeground(Color.black);
         backgroundjpanel.add(selectedgamemodelabel);
 
-        String text = new String("poziom#punkty#czas");
+        String text = new String("poziom ## punkty ## czas");
         text = text.replaceAll("#", "       ");
         JLabel menulabel = new JLabel(text);
         menulabel.setForeground(Color.gray);
-        menulabel.setFont(new Font("Monospaced", Font.BOLD, 40));
+        menulabel.setFont(new Font("Segoe UI", Font.BOLD, 40));
         menulabel.setBounds(30,-10,900,50);
         backgroundjpanel.add(menulabel);
         backgroundjpanel.add(dragShapes);
@@ -74,7 +74,7 @@ public class GameJPanel {
             public void actionPerformed(ActionEvent e) {
                 Writer out = null;
                 try {
-                    out = (new FileWriter("resources/score/" + selectedGameMode + "scoreboarddata.txt", true));
+                    out = new PrintWriter(new BufferedWriter(new FileWriter("resources/score/" + selectedGameMode + "scoreboarddata.txt", true)));
                     getDateAndTime();
                     out.write("\n" + currentscore + ";" + dateandtime + ";");
                     out.close();
@@ -118,7 +118,6 @@ public class GameJPanel {
             lines++;
         }
         sc.close();
-       // System.out.println("ILELINII??? " + lines);
         play();
 
         return backgroundjpanel;

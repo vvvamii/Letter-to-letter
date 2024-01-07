@@ -6,5 +6,5 @@ mouse
 ladder
 string
 bottle
-police
+policeman
 wheelchair

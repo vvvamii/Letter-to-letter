@@ -2,7 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -13,6 +16,7 @@ public class Highscore {
     String selectedGameMode = "";
     ArrayList<String> myList = new ArrayList<>();
     JList<String> list = new JList<String>();
+    JScrollPane scrollPane = new JScrollPane();
 
     Highscore(String selectedGameMode){
         this.selectedGameMode = selectedGameMode;
@@ -22,26 +26,37 @@ public class Highscore {
     void loadScore(){
         scores.clear();
         dates.clear();
-        InputStream is = Highscore.class.getResourceAsStream("/score/" + selectedGameMode+ "scoreboarddata.txt");
-        Scanner input = new Scanner(is);
+        BufferedReader in;
+        try {
+            in = new BufferedReader(new FileReader("resources/score/" + selectedGameMode+ "scoreboarddata.txt"));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        Scanner input = new Scanner(in);
         input.useDelimiter(";");
-        while (input.hasNext()) {
+
+        while(input.hasNext()) {
             String line = input.next();
             line = line.replaceAll("\n", "").replaceAll("\r", "");
             scores.add(Integer.parseInt(line));
+            System.out.println(line);
 
             line = input.next();
             line = line.replaceAll("\n", "").replaceAll("\r", "");
             dates.add(line);
+            System.out.println(line);
         }
         input.close();
 
         String[] sorted = IntStream.range(0, scores.size()).boxed()
                 .sorted(Comparator.comparingInt(i -> scores.get(i)))
-                .map(i -> scores.get(i) + " " + dates.get(i))
+                .map(i -> dates.get(i) + "      " + scores.get(i) + " pkt")
                 .toArray(String[]::new);
 
-        for(int i = sorted.length - 1; i >= 0; --i) myList.add(sorted[i]);
+        for(int i = sorted.length - 1; i >= 0; --i){
+            myList.add(sorted[i]);
+            System.out.println(sorted[i]);
+        }
         list = new JList<String>(myList.toArray(new String[myList.size()]));
     }
 
@@ -51,14 +66,13 @@ public class Highscore {
         JPanel panel = new JPanel(null);
         panel.setBackground(Color.orange);
         JLabel titlelabel = new JLabel("TABELA WYNIKÓW");
-        titlelabel.setFont(new Font("Ebrima", Font.ITALIC, 50));
+        titlelabel.setFont(new Font("Segoe UI", Font.ITALIC, 50));
         titlelabel.setBounds(280,10,500,50);
         panel.add(titlelabel);
 
         loadScore();
 
-        list.setFont(new Font("Monospaced", Font.ITALIC, 50));
-        JScrollPane scrollPane = new JScrollPane();
+        list.setFont(new Font("Segoe UI", Font.PLAIN, 50));
         scrollPane.setViewportView(list);
         list.setLayoutOrientation(JList.VERTICAL);
         scrollPane.setBounds(10,75,965,520);
@@ -76,6 +90,5 @@ public class Highscore {
 
         return panel;
     }
-
 
 }
