@@ -154,9 +154,9 @@ public class GameJPanel {
         // Dla dalszych poziomów zatrzymujemy timer i dodajemy punkty
         if(level > 0 && level < lines) {
             timer.stop();
-            tempScore = 1000 - counter * 50;
-            if(tempScore <= 0) tempScore = 10;
-            currentscore += tempScore;
+            tempScore = 1000 - counter * 50; // Po 20 sekundach nie dostajemy dodatkowych punktów
+            if(tempScore <= 0) tempScore = 0;
+            currentscore += tempScore + 10; // Dodaj do wyniku dodatkowe punkty oraz 10 punktów za ukończenie poziomu
             counter = 0;
         }
 
