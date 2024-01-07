@@ -97,13 +97,11 @@ public class GameJPanel {
                        movableLetter.forceIntersecting(answerRectangle);
                    }
                    if(movableLetter.placedCorrectly) ++check;
-                  // System.out.println(movableLetter.placedCorrectly);
                }
                 if(check == dragShapes.answerRectangles.size()) {
                     selectedgamemodelabel.setText("Poprawna odpowiedź!");
                     ++level;
                     stageFinished = true;
-                  //  System.out.println("NASTEPNYPOZIOM!!!: " + level);
                     play();
                 }
                 else selectedgamemodelabel.setText("Błędna odpowiedź!");
@@ -153,6 +151,7 @@ public class GameJPanel {
             }
         }
 
+        // Dla dalszych poziomów zatrzymujemy timer i dodajemy punkty
         if(level > 0 && level < lines) {
             timer.stop();
             tempScore = 1000 - counter * 50;
@@ -161,6 +160,7 @@ public class GameJPanel {
             counter = 0;
         }
 
+        // Po ukończonym poziomie resetuj timer i aktualizuj na nowo JLabel z czasem
         if(level < lines && stageFinished == true){
             timer = new Timer(1000, new ActionListener() {;
                 @Override
@@ -198,6 +198,7 @@ public class GameJPanel {
         }
     }
 
+    // Aktualna data i czas potrzebna do wpisania do wyniku
     void getDateAndTime(){
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");

@@ -45,15 +45,13 @@ public class DragShapes extends JPanel {
         for (AnswerRectangle rect : answerRectangles) {
             rect.draw(g2);
         }
-
         for (MovableLetter movableLetter : movableLetters) {
             movableLetter.draw(g2);
         }
-
         image.draw(g2);
     }
 
-
+    // Ruch literami za pomocą myszki
     private class MyMouse extends MouseAdapter {
         private MovableLetter movableLetter; // Aktualna litera, którą ruszamy
         private Point p; // Poprzednie położenie litery
@@ -152,6 +150,7 @@ class MovableLetter {
         else this.placedCorrectly = false;
     }
 
+    // Wywoływane przy kliknięciu przycisku sprawdzenia - jeśli litera się przecina z kwadratem zmieniana jest wartość placedCorrectly na true
     public void forceIntersecting(AnswerRectangle answerRectangle){
         if(this.intersectionZone.intersects(answerRectangle.rect.x, answerRectangle.rect.y, answerRectangle.rect.width, answerRectangle.rect.height)) {
             if(Objects.equals(this.character, answerRectangle.character)) this.placedCorrectly = true;
@@ -166,24 +165,27 @@ class MovableLetter {
         g2.draw(path);
     }
 
+    // Zdobywanie parametru X litery
     public int getX() {
         return x;
     }
 
+    // Ustawianie parametru X litery
     public void setX(int x) {
         this.x = x;
     }
 
+    // Zdobywanie parametru Y litery
     public int getY() {
         return y;
     }
 
+    // Ustawianie parametru Y litery
     public void setY(int y) {
         this.y = y;
     }
 
-
-    // Przekształcenie afiniczne (jak to działa???)
+    // Przekształcenie litery - zmiana położenia
     public void translate(Point p0, Point p1) {
         int tx = p1.x - p0.x;
         int ty = p1.y - p0.y;
@@ -202,6 +204,8 @@ class AnswerRectangle{
     public String character;
     private Path2D path;
     public Rectangle rect;
+
+    // Przypisanie wartości kwadratowi i tworzenie
     public AnswerRectangle(int x, int y, String character){
         this.x = x;
         this.y = y;
@@ -212,6 +216,7 @@ class AnswerRectangle{
 
     }
 
+    // Rysowanie kwadratów-pól na odpowiedź
     public void draw(Graphics2D g2) {
         g2.setColor(Color.red);
         g2.fill(path);
@@ -228,6 +233,7 @@ class ImageQuestion{
     public ImageQuestion(){
     }
 
+    // Ustawianie obrazka
     void setImage(InputStream is){
         try {
             this.image = ImageIO.read(is);
@@ -236,6 +242,7 @@ class ImageQuestion{
         }
     }
 
+    // Rysowanie obrazka
     public void draw(Graphics2D g2){
         g2.drawImage(image, 350, 10, 150, 150, null);
     }

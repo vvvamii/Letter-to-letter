@@ -3,9 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -35,28 +32,25 @@ public class Highscore {
         Scanner input = new Scanner(in);
         input.useDelimiter(";");
 
+        // Dopóki są dane w pliku to wczytuj je do odpowiednich ArrayList
         while(input.hasNext()) {
             String line = input.next();
             line = line.replaceAll("\n", "").replaceAll("\r", "");
             scores.add(Integer.parseInt(line));
-            System.out.println(line);
 
             line = input.next();
             line = line.replaceAll("\n", "").replaceAll("\r", "");
             dates.add(line);
-            System.out.println(line);
         }
         input.close();
 
+        // Sortowanie wczytanych danych według wartości w Arraylist scores i scalenie wszystkiego w jedną tablicę
         String[] sorted = IntStream.range(0, scores.size()).boxed()
                 .sorted(Comparator.comparingInt(i -> scores.get(i)))
                 .map(i -> dates.get(i) + "      " + scores.get(i) + " pkt")
                 .toArray(String[]::new);
 
-        for(int i = sorted.length - 1; i >= 0; --i){
-            myList.add(sorted[i]);
-            System.out.println(sorted[i]);
-        }
+        for(int i = sorted.length - 1; i >= 0; --i)myList.add(sorted[i]);
         list = new JList<String>(myList.toArray(new String[myList.size()]));
     }
 
@@ -78,8 +72,10 @@ public class Highscore {
         scrollPane.setBounds(10,75,965,520);
         panel.add(scrollPane);
 
-        JButton backButton = new JButton("BACK");
+        JButton backButton = new JButton("WYJŚCIE");
         backButton.setBounds(850,600,100,50);
+
+        // Wyjście z tablicy wyników po wciśnięciu powrotu
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
