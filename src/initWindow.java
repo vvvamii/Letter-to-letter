@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class initWindow extends JFrame{
 
     static backgroundJFrame myFrame = new backgroundJFrame();
+    String selectedGameMode = "";
 
     void initialize(){
         setContentPane(myFrame.backgroundJPanel);
@@ -16,17 +17,18 @@ public class initWindow extends JFrame{
 
 
     }
-    static void scoreboardMode(){
+    void scoreboardMode(){
         Highscore highscore = new Highscore();
         ArrayList list = highscore.loadhighscore();
         JPanel panel = highscore.panel();
         myFrame.backgroundJPanel.add(panel);
         panel.setVisible(true);
     }
-    static void gameMode(){
-        GameJPanel movablejpanels = new GameJPanel();
-        JPanel panel = movablejpanels.panel();
+    void gameMode(){
+        GameJPanel gameJPanel = new GameJPanel();
+        JPanel panel = gameJPanel.panel(selectedGameMode);
         myFrame.backgroundJPanel.add(panel);
         panel.setVisible(true);
     }
+
 }

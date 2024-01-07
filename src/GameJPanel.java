@@ -2,15 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GameJPanel {
 
+    String selectedGameMode;
     int level = 0;
+    int counter = 0;
     boolean stageFinished = true;
     int lines = 0;
     Timer timer;
@@ -20,7 +20,9 @@ public class GameJPanel {
     JLabel levellabel = new JLabel("X");
     JLabel scorelabel = new JLabel("Y");
 
-    JPanel panel(){
+    JPanel panel(String selectedGameMode){
+        this.selectedGameMode = selectedGameMode;
+
         JPanel backgroundjpanel = new JPanel(null);
         backgroundjpanel.setBackground(Color.cyan);
 
@@ -30,23 +32,28 @@ public class GameJPanel {
         JButton checkButton = new JButton("SPRAWDŹ");
 
         timelabel.setFont(new Font("Monospaced", Font.BOLD, 40));
-        timelabel.setBounds(680,35,200,50);
+        timelabel.setBounds(680,15,200,50);
         backgroundjpanel.add(timelabel);
 
         scorelabel.setFont(new Font("Monospaced", Font.BOLD, 40));
-        scorelabel.setBounds(400,35,200,50);
+        scorelabel.setBounds(400,15,200,50);
         backgroundjpanel.add(scorelabel);
 
         levellabel.setFont(new Font("Monospaced", Font.BOLD, 40));
-        levellabel.setBounds(90,35,200,50);
+        levellabel.setBounds(90,15,200,50);
         backgroundjpanel.add(levellabel);
+
+        JLabel selectedgamemodelabel = new JLabel(selectedGameMode);
+        selectedgamemodelabel.setFont(new Font("Monospaced", Font.BOLD, 40));
+        selectedgamemodelabel.setBounds(300,55,500,50);
+        backgroundjpanel.add(selectedgamemodelabel);
 
         String text = new String("poziom#punkty#czas");
         text = text.replaceAll("#", "       ");
         JLabel menulabel = new JLabel(text);
         menulabel.setForeground(Color.lightGray);
         menulabel.setFont(new Font("Monospaced", Font.BOLD, 40));
-        menulabel.setBounds(30,0,900,50);
+        menulabel.setBounds(30,-15,900,50);
         backgroundjpanel.add(menulabel);
 
         backgroundjpanel.add(dragShapes);
@@ -81,24 +88,15 @@ public class GameJPanel {
         });
         dragShapes.add(checkButton, BorderLayout.SOUTH);
 
-        loadData loadData = new loadData();
+        InputStream is = GameJPanel.class.getResourceAsStream(selectedGameMode + ".txt");
 
-
-        try {
-            data = loadData.load("dane.txt");
-            BufferedReader reader = new BufferedReader(new FileReader("dane.txt"));
-
-            try {
-                while (reader.readLine() != null) lines++;
-                reader.close();
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        Scanner sc = new Scanner(is);
+        String buf = new String();
+        while (sc.hasNextLine()) {
+            data.add(sc.nextLine());
+            lines++;
         }
-        catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        sc.close();
 
         play();
 
@@ -109,17 +107,23 @@ public class GameJPanel {
 
     void play(){
 
+        System.out.println("PLAYING! GAMEMODE IS: " + selectedGameMode);
+
         int score = 0;
+        int tempScore = 0;
 
         if(level > 0) {
             timer.stop();
-            ++score;
+            tempScore = 1000 - counter * 50;
+            if(tempScore <= 0) tempScore = 10;
+            score += tempScore;
+            tempScore = 0;
+            counter = 0;
         }
 
         if(level < lines || stageFinished == true){
 
-            timer = new Timer(1000, new ActionListener() {
-                int counter = 0;
+            timer = new Timer(1000, new ActionListener() {;
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     timelabel.setText(String.valueOf(counter));
@@ -134,7 +138,7 @@ public class GameJPanel {
                 dragShapes.answerRectangles.clear();
                 for(int j = 0; j < loadedString.length(); j++){
                     dragShapes.movableLetters.add(new MovableLetter(Color.blue, Character.toString(loadedString.charAt(j))));
-                    dragShapes.answerRectangles.add(new AnswerRectangle(25 + j*110,400, Character.toString(loadedString.charAt(j))));
+                    dragShapes.answerRectangles.add(new AnswerRectangle(10 + j*90,400, Character.toString(loadedString.charAt(j))));
                 }
                 stageFinished = false;
             }
