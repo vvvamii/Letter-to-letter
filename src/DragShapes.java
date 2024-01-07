@@ -14,14 +14,15 @@ import java.util.List;
 import java.awt.Font;
 import java.util.Objects;
 
+// Klasa zajmująca się ruchem liter, rysowaniem wszystkich elementów i wyświetlaniem tego w stworzonym JPanelu
 public class DragShapes extends JPanel {
     private static final Color Background = Color.WHITE;
     public List<MovableLetter> movableLetters = new ArrayList<>();
     public List<AnswerRectangle> answerRectangles = new ArrayList<>();
     public ImageQuestion image;
 
+    // JPanel z elementami interaktywnymi gry
     public DragShapes() {
-
         setLayout(new BorderLayout());
         setBounds(10,100,960,550);
         setBackground(Color.green);
@@ -37,10 +38,10 @@ public class DragShapes extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // antyaliasing
+        // Antyaliasing
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // rysowanie kwadratów oraz liter
+        // Rysowanie kwadratów, liter i obrazka
         for (AnswerRectangle rect : answerRectangles) {
             rect.draw(g2);
         }
@@ -54,19 +55,19 @@ public class DragShapes extends JPanel {
 
 
     private class MyMouse extends MouseAdapter {
-        private MovableLetter movableLetter; // aktualna litera, którą ruszamy
-        private Point p; // poprzednie położenie litery
+        private MovableLetter movableLetter; // Aktualna litera, którą ruszamy
+        private Point p; // Poprzednie położenie litery
 
         @Override
         public void mousePressed(MouseEvent e) {
             for (int i = movableLetters.size() - 1; i >= 0; i--) {
-                // wzięcie używanej litery
+                // Wzięcie używanej litery
                 MovableLetter movableLetter = movableLetters.get(i);
                 if (movableLetter.contains(e.getPoint())) {
                     this.movableLetter = movableLetter;
                     this.p = e.getPoint();
 
-                    // aktualna litera na wierzchu
+                    // Aktualna litera na wierzchu
                     movableLetters.remove(movableLetter);
                     movableLetters.add(movableLetter);
 
@@ -78,48 +79,37 @@ public class DragShapes extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            moveShape(e); // ruch literą
-            movableLetter = null;  // usunięcie referencji
+            moveShape(e); // Ruch literą
+            movableLetter = null;  // Usunięcie powiązania z konkretną literą
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            moveShape(e); // ruch literą
+            moveShape(e); // Ruch literą
         }
 
         private void moveShape(MouseEvent e) {
-            // jeśli nie ruszamy literą - wyjście
+            // Jeśli nie ruszamy literą - wyjście
             if (movableLetter == null) {
                 return;
             }
 
-            // jeśli ruszamy - translate i aktualizacja X oraz Y
+            // Jeśli ruszamy - translate i aktualizacja X oraz Y
             movableLetter.setX(e.getX());
             movableLetter.setY(e.getY());
             movableLetter.translate(p, e.getPoint());
 
-            for (int i=0;i<answerRectangles.size(); ++i) {
-                movableLetter.intersecting(answerRectangles.get(i));
-                System.out.println(i + " rect = " + movableLetter.placedCorrectly);
-                //  System.out.println(answerRectangles.get(i).rect.x + " " + answerRectangles.get(i).rect.y + " " + answerRectangles.get(i).rect.width + " " + answerRectangles.get(i).rect.height + " ");
-                System.out.println(movableLetter.getX() + " " + movableLetter.getY() + " ");
-            }
+            for (int i=0;i<answerRectangles.size(); ++i) movableLetter.intersecting(answerRectangles.get(i));
 
-
-           // System.out.println(colorShape.getX() + " " + colorShape.getY());
-           // drawString(String.valueOf(colorShape.character), colorShape.gettx(p, e.getPoint()), colorShape.gettx(p, e.getPoint()));
             repaint();
 
-            // reset
+            // Reset punktu
             p = e.getPoint();
-
         }
     }
-
 }
 
-
-
+// Klasa zajmująca się tworzeniem i wyświetlaniem interaktywnych liter
 class MovableLetter {
     private Color color;
     private int x;
@@ -130,6 +120,7 @@ class MovableLetter {
     private Shape shape;
     private Rectangle intersectionZone;
 
+    // Konstruktor interaktywnych liter
     public MovableLetter(int x, int y, Color color, String character) {
         super();
         this.x = x;
@@ -138,7 +129,7 @@ class MovableLetter {
         this.character = character;
         this.placedCorrectly = false;
 
-        // tworzenie litery
+        // Tworzenie litery
         TextLayout textTl = new TextLayout(character, new Font("Helvetica", Font.BOLD, 80),new FontRenderContext(null, false, false));
         AffineTransform textAt = new AffineTransform();
         textAt.translate(0, (float)textTl.getBounds().getHeight());
@@ -147,12 +138,12 @@ class MovableLetter {
         path = new Path2D.Double(shape);
     }
 
-    // czy punkt zawarty jest w literze
+    // Czy punkt zawarty jest w literze
     public boolean contains(Point p) {
         return path.contains(p);
     }
 
-    // sprawdzenie czy odpowiednia litera przecina się z odpowiednim kwadratem
+    // Sprawdzenie czy odpowiednia litera przecina się z odpowiednim kwadratem
     public void intersecting(AnswerRectangle answerRectangle){
         if(this.intersectionZone.intersects(answerRectangle.rect.x, answerRectangle.rect.y, answerRectangle.rect.width, answerRectangle.rect.height)) {
             if(Objects.equals(this.character, answerRectangle.character)) this.placedCorrectly = true;
@@ -167,7 +158,7 @@ class MovableLetter {
         }
     }
 
-    // rysuj
+    // Rysuj literę
     public void draw(Graphics2D g2) {
         g2.setColor(color);
         g2.fill(path);
@@ -192,7 +183,7 @@ class MovableLetter {
     }
 
 
-    // przekształcenie afiniczne (C)jak to działa to ja nie wiem)
+    // Przekształcenie afiniczne (jak to działa???)
     public void translate(Point p0, Point p1) {
         int tx = p1.x - p0.x;
         int ty = p1.y - p0.y;
@@ -200,8 +191,10 @@ class MovableLetter {
         intersectionZone.x = getX();
         intersectionZone.y = getY();
     }
+
 }
 
+// Klasa zajmująca się tworzeniem i wyświetlaniem kwadratów-pól na odpowiedź
 class AnswerRectangle{
     private int x;
     private int y;
@@ -228,6 +221,7 @@ class AnswerRectangle{
     }
 }
 
+// Klasa zajmująca się wyświetlaniem obrazka do obecnego pytania
 class ImageQuestion{
     private Image image;
 

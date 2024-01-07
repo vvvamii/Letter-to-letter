@@ -12,19 +12,24 @@ public class backgroundJFrame extends JFrame{
     private JButton gameButton;
     private JButton quitButton;
     private JComboBox gameModeCombo;
+    private JLabel modeLabel;
     private String selectedGameMode = "";
 
+    // ActionListenery wyświetlające odpowiedni JPanel
     public backgroundJFrame() {
 
+        // Przycisk wywołujący tryb tablicy wyników
         scoreboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 menuJPanel.setVisible(false);
                 initWindow tempInit = new initWindow();
+                tempInit.selectedGameMode = selectedGameMode;
                 tempInit.scoreboardMode();
             }
         });
 
+        // Przycisk wywołujący tryb gry
         gameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -35,16 +40,16 @@ public class backgroundJFrame extends JFrame{
             }
         });
 
+        // Przycisk wywołujący wyjście z programu
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
-
     }
 
-
+    // Tworzenie ComboBoxa z wyborem trybu
     private void createUIComponents() {
         gameModeCombo = new JComboBox<>();
         gameModeCombo.addItem("Geografia");
@@ -53,10 +58,9 @@ public class backgroundJFrame extends JFrame{
             @Override
             public void itemStateChanged(ItemEvent e) {
                 selectedGameMode = gameModeCombo.getSelectedItem().toString();
-                System.out.println(selectedGameMode + " selected");
+               // System.out.println(selectedGameMode + " selected");
             }
         });
-
         gameModeCombo.setSelectedIndex(1);
     }
 }

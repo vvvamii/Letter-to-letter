@@ -2,45 +2,66 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.InputStream;
+import java.util.*;
+import java.util.stream.IntStream;
 
+// Klasa zajmująca się załadowywaniem i wyświetlaniem tabeli wyników
 public class Highscore {
-    ArrayList<String> loadhighscore(){
-        loadData loadData = new loadData();
-        ArrayList<String> highscores = new ArrayList<String>();
-        try {
-            highscores = loadData.load("scoreboard.txt");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    ArrayList<Integer> scores = new ArrayList<>();
+    ArrayList<String> dates = new ArrayList<>();
+    String selectedGameMode = "";
+    ArrayList<String> myList = new ArrayList<>();
+    JList<String> list = new JList<String>();
 
-        return highscores;
+    Highscore(String selectedGameMode){
+        this.selectedGameMode = selectedGameMode;
     }
 
-    JPanel panel(){
-        JPanel panel = new JPanel(null);
-        loadData load = new loadData();
-        ArrayList<String> myList = null;
-        try {
-            myList = load.load("scoreboard.txt");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        Collections.sort(myList);
-        final JList<String> list = new JList<String>(myList.toArray(new String[myList.size()]));
-        list.setFont(new Font("Monospaced", Font.ITALIC, 50));
+    // Załadowywanie wyników
+    void loadScore(){
+        scores.clear();
+        dates.clear();
+        InputStream is = Highscore.class.getResourceAsStream("/score/" + selectedGameMode+ "scoreboarddata.txt");
+        Scanner input = new Scanner(is);
+        input.useDelimiter(";");
+        while (input.hasNext()) {
+            String line = input.next();
+            line = line.replaceAll("\n", "").replaceAll("\r", "");
+            scores.add(Integer.parseInt(line));
 
+            line = input.next();
+            line = line.replaceAll("\n", "").replaceAll("\r", "");
+            dates.add(line);
+        }
+        input.close();
+
+        String[] sorted = IntStream.range(0, scores.size()).boxed()
+                .sorted(Comparator.comparingInt(i -> scores.get(i)))
+                .map(i -> scores.get(i) + " " + dates.get(i))
+                .toArray(String[]::new);
+
+        for(int i = sorted.length - 1; i >= 0; --i) myList.add(sorted[i]);
+        list = new JList<String>(myList.toArray(new String[myList.size()]));
+    }
+
+    // JPanel z tablicą wyników
+    JPanel panel(){
+
+        JPanel panel = new JPanel(null);
+        panel.setBackground(Color.orange);
         JLabel titlelabel = new JLabel("TABELA WYNIKÓW");
         titlelabel.setFont(new Font("Ebrima", Font.ITALIC, 50));
-        titlelabel.setBounds(300,10,500,50);
+        titlelabel.setBounds(280,10,500,50);
         panel.add(titlelabel);
 
+        loadScore();
+
+        list.setFont(new Font("Monospaced", Font.ITALIC, 50));
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(list);
         list.setLayoutOrientation(JList.VERTICAL);
-        scrollPane.setBounds(10,75,960,500);
+        scrollPane.setBounds(10,75,965,520);
         panel.add(scrollPane);
 
         JButton backButton = new JButton("BACK");
@@ -56,17 +77,5 @@ public class Highscore {
         return panel;
     }
 
-
-}
-
-class ScoreInfo {
-    int points;
-    private String name;
-
-    ArrayList<ScoreInfo> scoreboard(){
-        ArrayList<ScoreInfo> scores = new ArrayList<ScoreInfo>();
-      //  Collections.sort(scores, Comparator.);
-        return scores;
-    }
 
 }

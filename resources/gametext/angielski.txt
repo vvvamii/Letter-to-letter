@@ -1,0 +1,10 @@
+bow
+bear
+table
+chair
+mouse
+ladder
+string
+bottle
+police
+wheelchair
