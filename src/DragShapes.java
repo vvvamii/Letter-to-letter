@@ -222,7 +222,7 @@ class AnswerRectangle{
         g2.fill(path);
         g2.setColor(Color.black);
         g2.draw(path);
-        g2.drawString(String.valueOf(this.character), this.x, this.y);
+       // g2.drawString(String.valueOf(this.character), this.x, this.y); // Wyświetlanie litery przypisanej do kwadratu
     }
 }
 
