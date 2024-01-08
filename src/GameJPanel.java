@@ -9,25 +9,92 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-// JPanel z interfejsem gry
+/**
+ * System gry - odliczanie czasu, dodawanie punktów, przechodzenie do następnego poziomu, tworzenie odpowiedniej ilości liter i kwadratów
+ */
 public class GameJPanel {
-    String selectedGameMode;
-    int level = 0;
-    int counter = 0;
-    int currentscore = 0;
-    boolean stageFinished = true;
-    int lines = 0;
-    Timer timer;
-    ArrayList<String> data = new ArrayList<String>();
-    DragShapes dragShapes = new DragShapes();
-    JPanel backgroundjpanel = new JPanel(null);
-    JLabel timelabel = new JLabel("TT");
-    JLabel levellabel = new JLabel("X");
-    JLabel scorelabel = new JLabel("Y");
-    JLabel selectedgamemodelabel = new JLabel(selectedGameMode);
-    String dateandtime = "";
 
-    JPanel panel(String selectedGameMode){
+    /**
+     * Wybrany tryb gry
+     */
+    private String selectedGameMode;
+
+    /**
+     * Poziom aktualnej gry
+     */
+    private int level = 0;
+
+    /**
+     * Int służący do przechowywania czasu
+     */
+    private int counter = 0;
+
+    /**
+     * Aktualny wynik
+     */
+    private int currentscore = 0;
+
+    /**
+     * Boolean służący do przechowywania statusu aktualnego poziomu
+     */
+    private boolean stageFinished = true;
+
+    /**
+     * Ilość linii (słów) w aktualnym pliku z pytaniami / poziomami
+     */
+    private int lines = 0;
+
+    /**
+     * Timer do odliczania czasu przeznaczonego na poziom
+     */
+    private Timer timer;
+
+    /**
+     * Przechowywanie danych
+     */
+    private ArrayList<String> data = new ArrayList<String>();
+
+    /**
+     * Ruch liter, rysowanie elementów i wyświetlanie w osobnym JPanelu
+     */
+    private DragShapes dragShapes = new DragShapes();
+
+    /**
+     * Tło
+     */
+    private JPanel backgroundjpanel = new JPanel(null);
+
+    /**
+     * Wyświetla aktualny czas
+     */
+    private JLabel timelabel = new JLabel("TT");
+
+    /**
+     * Wyświetla aktualny poziom
+     */
+    private JLabel levellabel = new JLabel("X");
+
+    /**
+     * Wyświetla aktualną punktację
+     */
+    private JLabel scorelabel = new JLabel("Y");
+
+    /**
+     * Wyświetla aktualny tryb gry / komunikaty (poprawna odpowiedź, błędna odpowiedź, koniec gry)
+     */
+    private JLabel selectedgamemodelabel = new JLabel(selectedGameMode);
+
+    /**
+     * Aktualna data i czas do zapisania do tablicy wyników
+     */
+    private String dateandtime = "";
+
+    /**
+     * JPanel z interfejsem gry
+     * @param selectedGameMode
+     * @return
+     */
+    public JPanel panel(String selectedGameMode){
         this.selectedGameMode = selectedGameMode;
         Highscore score = new Highscore(selectedGameMode);
 
@@ -122,8 +189,10 @@ public class GameJPanel {
     }
 
 
-    // Załadowywanie plików i elementów interaktywnych gry, odmierzanie czasu, dodawanie punktów do wyniku, przechodzenie do następnego etapu
-    void play(){
+    /**
+     * Załadowywanie plików i elementów interaktywnych gry, odmierzanie czasu, dodawanie punktów do wyniku, przechodzenie do następnego etapu
+     */
+    private void play(){
 
         int tempScore = 0;
 
@@ -198,8 +267,10 @@ public class GameJPanel {
         }
     }
 
-    // Aktualna data i czas potrzebna do wpisania do wyniku
-    void getDateAndTime(){
+    /**
+     * Aktualna data i czas potrzebna do wpisania do wyniku
+     */
+    private void getDateAndTime(){
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         dateandtime = myDateObj.format(myFormatObj);

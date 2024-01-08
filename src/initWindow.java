@@ -1,12 +1,24 @@
 import javax.swing.*;
 
-// Klasa uruchamiajaca odpowiedni tryb - gra lub tablica wyników
+/**
+ * Klasa uruchamiajaca odpowiedni tryb - gra lub tablica wyników
+ */
 public class initWindow extends JFrame{
-    static backgroundJFrame myFrame = new backgroundJFrame();
-    String selectedGameMode = "";
 
-    // Ustawienie JFrame do wyświetlania
-    void initialize(){
+    /**
+     * Okno główne programu
+     */
+    private static backgroundJFrame myFrame = new backgroundJFrame();
+
+    /**
+     * Wybrany tryb
+     */
+    public String selectedGameMode = "";
+
+    /**
+     * Ustawienie JFrame do wyświetlania
+     */
+    public void initialize(){
         setContentPane(myFrame.backgroundJPanel);
         setTitle("Litera do litery - projekt");
         setSize(1000,700);
@@ -16,8 +28,10 @@ public class initWindow extends JFrame{
         setVisible(true);
     }
 
-    // Tryb tablicy wyników
-    void scoreboardMode(){
+    /**
+     * Tryb tablicy wyników
+     */
+    public void scoreboardMode(){
         Highscore highscore = new Highscore(selectedGameMode);
         JPanel panel = highscore.panel();
         highscore.loadScore();
@@ -25,8 +39,10 @@ public class initWindow extends JFrame{
         panel.setVisible(true);
     }
 
-    // Tryb gry
-    void gameMode(){
+    /**
+     * Tryb gry
+     */
+    public void gameMode(){
         GameJPanel gameJPanel = new GameJPanel();
         JPanel panel = gameJPanel.panel(selectedGameMode);
         myFrame.backgroundJPanel.add(panel);

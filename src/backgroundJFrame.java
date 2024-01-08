@@ -4,21 +4,63 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+/**
+ * Tworzenie JFrame - okno aplikacji
+ */
 public class backgroundJFrame extends JFrame{
+    /**
+     * Tło aplikacji
+     */
     public JPanel backgroundJPanel;
+
+    /**
+     * Przycisk przechodzący do tablicy wyników
+     */
     private JButton scoreboardButton;
+
+    /**
+     * JPanel będący menu głównym aplikacji
+     */
     private JPanel menuJPanel;
+
+    /**
+     * Tytuł aplikacji w menu głównym
+     */
     private JLabel mainMenuLabel;
+
+    /**
+     * Przycisk przechodzący do gry
+     */
     private JButton gameButton;
+
+    /**
+     * Przycisk służacy do wyjścia z aplikacji
+     */
     private JButton quitButton;
+
+    /**
+     * JComboBox z wyborem trybu gry i tablicy wyników
+     */
     private JComboBox gameModeCombo;
+
+    /**
+     * JLabel z opisem comboboxa
+     */
     private JLabel modeLabel;
+
+    /**
+     * Aktualnie wybrany tryb gry
+     */
     private String selectedGameMode = "";
 
-    // ActionListenery wyświetlające odpowiedni JPanel
+    /**
+     * Zawiera ActionListenery wyświetlające odpowiedni JPanel
+     */
     public backgroundJFrame() {
 
-        // Przycisk wywołujący tryb tablicy wyników
+        /**
+         * Przycisk wywołujący tryb tablicy wyników
+         */
         scoreboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -29,7 +71,9 @@ public class backgroundJFrame extends JFrame{
             }
         });
 
-        // Przycisk wywołujący tryb gry
+        /**
+         * Przycisk wywołujący tryb gry
+         */
         gameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,7 +84,9 @@ public class backgroundJFrame extends JFrame{
             }
         });
 
-        // Przycisk wywołujący wyjście z programu
+        /**
+         * Przycisk wywołujący wyjście z programu
+         */
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,7 +95,9 @@ public class backgroundJFrame extends JFrame{
         });
     }
 
-    // Tworzenie ComboBoxa z wyborem trybu
+    /**
+     * Tworzenie ComboBoxa z wyborem trybu
+     */
     private void createUIComponents() {
         gameModeCombo = new JComboBox<>();
         gameModeCombo.addItem("Geografia");
@@ -58,7 +106,6 @@ public class backgroundJFrame extends JFrame{
             @Override
             public void itemStateChanged(ItemEvent e) {
                 selectedGameMode = gameModeCombo.getSelectedItem().toString();
-               // System.out.println(selectedGameMode + " selected");
             }
         });
         gameModeCombo.setSelectedIndex(1);

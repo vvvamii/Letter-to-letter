@@ -6,21 +6,53 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.IntStream;
 
-// Klasa zajmująca się załadowywaniem i wyświetlaniem tabeli wyników
+/**
+ * Klasa zajmująca się załadowywaniem i wyświetlaniem tabeli wyników
+ */
 public class Highscore {
-    ArrayList<Integer> scores = new ArrayList<>();
-    ArrayList<String> dates = new ArrayList<>();
-    String selectedGameMode = "";
-    ArrayList<String> myList = new ArrayList<>();
-    JList<String> list = new JList<String>();
-    JScrollPane scrollPane = new JScrollPane();
 
-    Highscore(String selectedGameMode){
+    /**
+     * Przechowuje załadowane punkty z pliku
+     */
+    private ArrayList<Integer> scores = new ArrayList<>();
+
+    /**
+     * Przechowuje załadowane daty z pliku
+     */
+    private ArrayList<String> dates = new ArrayList<>();
+
+    /**
+     * Aktualny tryb
+     */
+    private String selectedGameMode = "";
+
+    /**
+     * Przechowuje przekonwertowane i posortowane punkty i daty
+     */
+    private ArrayList<String> myList = new ArrayList<>();
+
+    /**
+     * Lista z punktami i datami (po przekonwertowaniu) do wyświetlenia w tablicy wyników
+     */
+    private JList<String> list = new JList<String>();
+
+    /**
+     * Wyświetlanie tablicy wyników
+     */
+    private JScrollPane scrollPane = new JScrollPane();
+
+    /**
+     * Pobiera aktualny tryb
+     * @param selectedGameMode
+     */
+    public Highscore(String selectedGameMode){
         this.selectedGameMode = selectedGameMode;
     }
 
-    // Załadowywanie wyników
-    void loadScore(){
+    /**
+     * Załadowywanie wyników
+     */
+    public void loadScore(){
         scores.clear();
         dates.clear();
         BufferedReader in;
@@ -54,8 +86,11 @@ public class Highscore {
         list = new JList<String>(myList.toArray(new String[myList.size()]));
     }
 
-    // JPanel z tablicą wyników
-    JPanel panel(){
+    /**
+     * JPanel z tablicą wyników
+     * @return
+     */
+    public JPanel panel(){
 
         JPanel panel = new JPanel(null);
         panel.setBackground(Color.orange);

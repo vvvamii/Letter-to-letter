@@ -14,14 +14,34 @@ import java.util.List;
 import java.awt.Font;
 import java.util.Objects;
 
-// Klasa zajmująca się ruchem liter, rysowaniem wszystkich elementów i wyświetlaniem tego w stworzonym JPanelu
+/**
+ * Klasa zajmująca się ruchem liter, rysowaniem wszystkich elementów i wyświetlaniem tego w stworzonym JPanelu
+ */
 public class DragShapes extends JPanel {
+
+    /**
+     * Tło panelu z interaktywnymi elementami gry
+     */
     private static final Color Background = Color.WHITE;
+
+    /**
+     * Kontener przechowujący aktualnie wykorzystywane litery
+     */
     public List<MovableLetter> movableLetters = new ArrayList<>();
+
+    /**
+     * Kontener przechowujący aktualnie wykorzystywane kwadraty
+     */
     public List<AnswerRectangle> answerRectangles = new ArrayList<>();
+
+    /**
+     * Aktualny obrazek
+     */
     public ImageQuestion image;
 
-    // JPanel z elementami interaktywnymi gry
+    /**
+     * JPanel z elementami interaktywnymi gry
+     */
     public DragShapes() {
         setLayout(new BorderLayout());
         setBounds(10,100,960,550);
@@ -51,7 +71,9 @@ public class DragShapes extends JPanel {
         image.draw(g2);
     }
 
-    // Ruch literami za pomocą myszki
+    /**
+     * Ruch literami za pomocą myszki
+     */
     private class MyMouse extends MouseAdapter {
         private MovableLetter movableLetter; // Aktualna litera, którą ruszamy
         private Point p; // Poprzednie położenie litery
@@ -86,6 +108,10 @@ public class DragShapes extends JPanel {
             moveShape(e); // Ruch literą
         }
 
+        /**
+         * Ruszanie literą
+         * @param e
+         */
         private void moveShape(MouseEvent e) {
             // Jeśli nie ruszamy literą - wyjście
             if (movableLetter == null) {
@@ -107,7 +133,9 @@ public class DragShapes extends JPanel {
     }
 }
 
-// Klasa zajmująca się tworzeniem i wyświetlaniem interaktywnych liter
+/**
+ * Klasa zajmująca się tworzeniem i wyświetlaniem interaktywnych liter
+ */
 class MovableLetter {
     private Color color;
     private int x;
@@ -118,7 +146,13 @@ class MovableLetter {
     private Shape shape;
     private Rectangle intersectionZone;
 
-    // Konstruktor interaktywnych liter
+    /**
+     * Konstruktor interaktywnych liter
+     * @param x
+     * @param y
+     * @param color
+     * @param character
+     */
     public MovableLetter(int x, int y, Color color, String character) {
         super();
         this.x = x;
@@ -136,12 +170,19 @@ class MovableLetter {
         path = new Path2D.Double(shape);
     }
 
-    // Czy punkt zawarty jest w literze
+    /**
+     * Czy punkt zawarty jest w literze
+     * @param p
+     * @return
+     */
     public boolean contains(Point p) {
         return path.contains(p);
     }
 
-    // Sprawdzenie czy odpowiednia litera przecina się z odpowiednim kwadratem
+    /**
+     * Sprawdzenie czy odpowiednia litera przecina się z odpowiednim kwadratem
+     * @param answerRectangle
+     */
     public void intersecting(AnswerRectangle answerRectangle){
         if(this.intersectionZone.intersects(answerRectangle.rect.x, answerRectangle.rect.y, answerRectangle.rect.width, answerRectangle.rect.height)) {
             if(Objects.equals(this.character, answerRectangle.character)) this.placedCorrectly = true;
@@ -150,14 +191,20 @@ class MovableLetter {
         else this.placedCorrectly = false;
     }
 
-    // Wywoływane przy kliknięciu przycisku sprawdzenia - jeśli litera się przecina z kwadratem zmieniana jest wartość placedCorrectly na true
+    /**
+     * Wywoływane przy kliknięciu przycisku sprawdzenia - jeśli litera się przecina z kwadratem zmieniana jest wartość placedCorrectly na true
+     * @param answerRectangle
+     */
     public void forceIntersecting(AnswerRectangle answerRectangle){
         if(this.intersectionZone.intersects(answerRectangle.rect.x, answerRectangle.rect.y, answerRectangle.rect.width, answerRectangle.rect.height)) {
             if(Objects.equals(this.character, answerRectangle.character)) this.placedCorrectly = true;
         }
     }
 
-    // Rysuj literę
+    /**
+     * Rysuj literę
+     * @param g2
+     */
     public void draw(Graphics2D g2) {
         g2.setColor(color);
         g2.fill(path);
@@ -165,27 +212,43 @@ class MovableLetter {
         g2.draw(path);
     }
 
-    // Zdobywanie parametru X litery
+    /**
+     * Zdobywanie parametru X litery
+     * @return
+     */
     public int getX() {
         return x;
     }
 
-    // Ustawianie parametru X litery
+    /**
+     * Ustawianie parametru X litery
+     * @param x
+     */
     public void setX(int x) {
         this.x = x;
     }
 
-    // Zdobywanie parametru Y litery
+    /**
+     * Zdobywanie parametru Y litery
+     * @return
+     */
     public int getY() {
         return y;
     }
 
-    // Ustawianie parametru Y litery
+    /**
+     * Ustawianie parametru Y litery
+     * @param y
+     */
     public void setY(int y) {
         this.y = y;
     }
 
-    // Przekształcenie litery - zmiana położenia
+    /**
+     * Przekształcenie litery - zmiana położenia
+     * @param p0
+     * @param p1
+     */
     public void translate(Point p0, Point p1) {
         int tx = p1.x - p0.x;
         int ty = p1.y - p0.y;
@@ -196,7 +259,9 @@ class MovableLetter {
 
 }
 
-// Klasa zajmująca się tworzeniem i wyświetlaniem kwadratów-pól na odpowiedź
+/**
+ * Klasa zajmująca się tworzeniem i wyświetlaniem kwadratów-pól na odpowiedź
+ */
 class AnswerRectangle{
     private int x;
     private int y;
@@ -205,7 +270,12 @@ class AnswerRectangle{
     private Path2D path;
     public Rectangle rect;
 
-    // Przypisanie wartości kwadratowi i tworzenie
+    /**
+     * Przypisanie wartości kwadratowi i tworzenie
+     * @param x
+     * @param y
+     * @param character
+     */
     public AnswerRectangle(int x, int y, String character){
         this.x = x;
         this.y = y;
@@ -216,7 +286,10 @@ class AnswerRectangle{
 
     }
 
-    // Rysowanie kwadratów-pól na odpowiedź
+    /**
+     * Rysowanie kwadratów-pól na odpowiedź
+     * @param g2
+     */
     public void draw(Graphics2D g2) {
         g2.setColor(Color.red);
         g2.fill(path);
@@ -226,15 +299,19 @@ class AnswerRectangle{
     }
 }
 
-// Klasa zajmująca się wyświetlaniem obrazka do obecnego pytania
+/**
+ * Klasa zajmująca się wyświetlaniem obrazka do obecnego pytania
+ */
 class ImageQuestion{
     private Image image;
-
     public ImageQuestion(){
     }
 
-    // Ustawianie obrazka
-    void setImage(InputStream is){
+    /**
+     * Ustawianie obrazka
+     * @param is
+     */
+    public void setImage(InputStream is){
         try {
             this.image = ImageIO.read(is);
         } catch (IOException e) {
@@ -242,7 +319,10 @@ class ImageQuestion{
         }
     }
 
-    // Rysowanie obrazka
+    /**
+     * Rysowanie obrazka
+     * @param g2
+     */
     public void draw(Graphics2D g2){
         g2.drawImage(image, 350, 10, 150, 150, null);
     }
