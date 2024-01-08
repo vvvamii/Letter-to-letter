@@ -20,7 +20,7 @@ public class initWindow extends JFrame{
      */
     public void initialize(){
         setContentPane(myFrame.backgroundJPanel);
-        setTitle("Litera do litery - projekt");
+        setTitle("Litera do litery - Kamil Tchórzewski");
         setSize(1000,700);
         setResizable(false);
         setLocationRelativeTo(null);

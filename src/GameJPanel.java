@@ -141,7 +141,7 @@ public class GameJPanel {
             public void actionPerformed(ActionEvent e) {
                 Writer out = null;
                 try {
-                    out = new PrintWriter(new BufferedWriter(new FileWriter("resources/score/" + selectedGameMode + "scoreboarddata.txt", true)));
+                    out = new PrintWriter(new BufferedWriter(new FileWriter("res/score/" + selectedGameMode + "scoreboarddata.txt", true)));
                     getDateAndTime();
                     out.write("\n" + currentscore + ";" + dateandtime + ";");
                     out.close();
@@ -211,7 +211,7 @@ public class GameJPanel {
             });
             timer.start();
             try {
-                out = (new FileWriter("resources/score/" + selectedGameMode + "scoreboarddata.txt", true));
+                out = (new FileWriter("res/score/" + selectedGameMode + "scoreboarddata.txt", true));
                 getDateAndTime();
                 out.write("\n" + currentscore + ";" + dateandtime + ";");
                 out.close();

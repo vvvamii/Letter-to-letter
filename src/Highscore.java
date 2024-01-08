@@ -57,7 +57,7 @@ public class Highscore {
         dates.clear();
         BufferedReader in;
         try {
-            in = new BufferedReader(new FileReader("resources/score/" + selectedGameMode+ "scoreboarddata.txt"));
+            in = new BufferedReader(new FileReader("res/score/" + selectedGameMode+ "scoreboarddata.txt"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
