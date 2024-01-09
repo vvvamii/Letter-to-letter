@@ -135,7 +135,7 @@ public class GameJPanel {
         backgroundjpanel.add(menulabel);
         backgroundjpanel.add(dragShapes);
 
-        // Wyjście z gry
+        // Wyjście z gry i jednoczesne zapisanie dotychczasowych punktów w tablicy wyników
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -166,16 +166,17 @@ public class GameJPanel {
                    if(movableLetter.placedCorrectly) ++check;
                }
                 if(check == dragShapes.answerRectangles.size()) {
-                    selectedgamemodelabel.setText("Poprawna odpowiedź!");
+                    selectedgamemodelabel.setText("Poprawna odpowiedź!"); // Jeśli ilość poprawnie ułożonych liter równa się ilości kwadratów - poprawna odpowiedź
                     ++level;
                     stageFinished = true;
                     play();
                 }
-                else selectedgamemodelabel.setText("Błędna odpowiedź!");
+                else selectedgamemodelabel.setText("Błędna odpowiedź!"); // W przeciwnym wypadku odpowiedź jest błędna
             }
         });
         dragShapes.add(checkButton, BorderLayout.SOUTH);
 
+        // Zliczanie linii w pliku (poziomów) oraz dodawanie danych (pytań)
         InputStream is = GameJPanel.class.getResourceAsStream("/gametext/" + selectedGameMode + ".txt");
         Scanner sc = new Scanner(is);
         while (sc.hasNextLine()) {
@@ -196,6 +197,7 @@ public class GameJPanel {
 
         int tempScore = 0;
 
+        // Jeśli ukończono wszystkie poziomy - wyświetl napis "KONIEC GRY", zapisz wynik oraz po pięciu sekundach wyjdź z gry
         if(level >= lines){
             selectedgamemodelabel.setText("KONIEC GRY");
             Writer out = null;
@@ -240,11 +242,13 @@ public class GameJPanel {
             });
             timer.start();
 
+            // Ładowanie obrazka do aktualnego pytania
             String loadedString = (String)data.get(level);
             InputStream is = GameJPanel.class.getResourceAsStream("/gamepng/" + selectedGameMode + "/" + loadedString + ".png");
             ImageQuestion image = new ImageQuestion();
             image.setImage(is);
 
+            // Jeżeli ukończono poziom - wyczyść kontenery na litery i kwadraty oraz dodaj nowe
             if(stageFinished == true){
                 dragShapes.movableLetters.clear();
                 dragShapes.answerRectangles.clear();
@@ -254,14 +258,15 @@ public class GameJPanel {
                     dragShapes.answerRectangles.add(new AnswerRectangle(10 + j*90,400, Character.toString(loadedString.charAt(j))));
                     dragShapes.movableLetters.get(j).translate(new Point(-400 + rand.nextInt(400), 100), new Point(rand.nextInt(400), 400));
                 }
+                // Dwie losowe litery by utrudnić grę
                 for(int j = 0; j < 2; j++){
                     dragShapes.movableLetters.add(new MovableLetter(10 + j*90, 200, Color.blue, Character.toString((char)rand.nextInt(26) + 'a')));
                     dragShapes.movableLetters.get(loadedString.length() + j).translate(new Point(-400 + rand.nextInt(400), 100), new Point(rand.nextInt(400), 400));
                 }
-                stageFinished = false;
+                stageFinished = false; // Po wszystkim ustaw poziom na nieukończony
             }
-            levellabel.setText((level + 1) + "/" + lines);
-            scorelabel.setText(String.valueOf(currentscore));
+            levellabel.setText((level + 1) + "/" + lines);  // Zaaktualizuj aktualny poziom (aktualny poziom na wszystkie poziomy)
+            scorelabel.setText(String.valueOf(currentscore)); // Zaaktualizuj aktualnie posiadane punkty
             dragShapes.image = image;
             dragShapes.repaint();
         }

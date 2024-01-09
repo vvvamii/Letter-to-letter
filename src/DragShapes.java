@@ -48,11 +48,16 @@ public class DragShapes extends JPanel {
         setBackground(Color.green);
         setBackground(Background);
 
+        // Dodanie Action Listenera (tutaj MouseListener oraz MouseMotionListener) do myszki - wykrywanie ruchu oraz naciśnięć
         MyMouse myMouse = new MyMouse();
         addMouseListener(myMouse);
         addMouseMotionListener(myMouse);
     }
 
+    /**
+     * Rysowanie wszystkich liter i kwadratów zawartch w kontenerach oraz obrazka odpowiadających aktualnemu pytaniu w grze
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -123,7 +128,7 @@ public class DragShapes extends JPanel {
             movableLetter.setY(e.getY());
             movableLetter.translate(p, e.getPoint());
 
-            for (int i=0;i<answerRectangles.size(); ++i) movableLetter.intersecting(answerRectangles.get(i));
+            for (int i=0;i<answerRectangles.size(); ++i) movableLetter.intersecting(answerRectangles.get(i)); // Czy litera się przecina z kwadratem i jest prawidłowa - test
 
             repaint();
 
