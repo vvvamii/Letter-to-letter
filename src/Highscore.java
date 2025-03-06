@@ -93,7 +93,9 @@ public class Highscore {
     public JPanel panel(){
 
         JPanel panel = new JPanel(null);
-        panel.setBackground(Color.orange);
+        float[] hsbVal = new float[3];
+        Color.RGBtoHSB(229, 189, 136, hsbVal);
+        panel.setBackground(Color.getHSBColor(hsbVal[0], hsbVal[1], hsbVal[2]));
         JLabel titlelabel = new JLabel("TABELA WYNIKÓW");
         titlelabel.setFont(new Font("Segoe UI", Font.ITALIC, 50));
         titlelabel.setBounds(280,10,500,50);

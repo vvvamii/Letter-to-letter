@@ -98,7 +98,9 @@ public class GameJPanel {
         this.selectedGameMode = selectedGameMode;
         Highscore score = new Highscore(selectedGameMode);
 
-        backgroundjpanel.setBackground(Color.orange);
+        float[] hsbVal = new float[3];
+        Color.RGBtoHSB(229, 189, 136, hsbVal);
+        backgroundjpanel.setBackground(Color.getHSBColor(hsbVal[0], hsbVal[1], hsbVal[2]));
 
         JButton backButton = new JButton("WYJŚCIE");
         backButton.setBounds(875,25,100,50);
@@ -121,8 +123,8 @@ public class GameJPanel {
         backgroundjpanel.add(levellabel);
 
         selectedgamemodelabel.setText(selectedGameMode);
-        selectedgamemodelabel.setFont(new Font("BIZ UDGothic", Font.BOLD, 35));
-        selectedgamemodelabel.setBounds(350,60,500,50);
+        selectedgamemodelabel.setFont(new Font("JetBrains Mono", Font.ITALIC, 35));
+        selectedgamemodelabel.setBounds(350,55,500,50);
         selectedgamemodelabel.setForeground(Color.black);
         backgroundjpanel.add(selectedgamemodelabel);
 

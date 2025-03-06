@@ -13,7 +13,7 @@
           <card name="Card1"/>
         </constraints>
         <properties>
-          <background color="-16732443"/>
+          <background color="-1720952"/>
           <enabled value="true"/>
           <foreground color="-1725151"/>
         </properties>
@@ -112,26 +112,26 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="21fe9" class="javax.swing.JComboBox" binding="gameModeCombo" custom-create="true">
-            <constraints>
-              <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="9" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="142" height="35"/>
-              </grid>
-            </constraints>
-            <properties>
-              <background color="-131077"/>
-              <font name="BIZ UDGothic" size="20"/>
-              <foreground color="-16777216"/>
-            </properties>
-          </component>
           <component id="bf7b0" class="javax.swing.JLabel" binding="modeLabel">
             <constraints>
               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="5" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <font name="BIZ UDMincho Medium" size="28"/>
+              <font name="JetBrains Mono" size="28"/>
               <foreground color="-16777216"/>
               <text value="Wybór trybu:"/>
+            </properties>
+          </component>
+          <component id="21fe9" class="javax.swing.JComboBox" binding="gameModeCombo" custom-create="true">
+            <constraints>
+              <grid row="3" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="9" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="142" height="35"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-131077"/>
+              <font name="JetBrains Mono" size="20"/>
+              <foreground color="-16777216"/>
             </properties>
           </component>
         </children>
