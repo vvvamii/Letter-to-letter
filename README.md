@@ -13,3 +13,12 @@ Educational game written in Java. The goal is to create a word for scrambled let
 - Couple extra letters that do not necessarily fit into the word  
 - Timer showing elapsed time  
 - Leaderboard with best scores, saves between sessions  
+
+
+## Screenshots  
+
+![main_menu](https://github.com/vvvamii/Letter-to-letter/blob/87637160669248a89a8ac372f0f563d286ec367f/Screenshot_mainmenu.png)
+
+![game](https://github.com/vvvamii/Letter-to-letter/blob/87637160669248a89a8ac372f0f563d286ec367f/Screenshot_game.png)
+
+![leaderboard](https://github.com/vvvamii/Letter-to-letter/blob/87637160669248a89a8ac372f0f563d286ec367f/Screenshot_leaderboard.png)
